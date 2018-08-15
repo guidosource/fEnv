@@ -15,17 +15,15 @@ let cliente = new Schema({
         required : [true, 'el apellido es necesario']
     },
     documento : {
-        type : Number,
+        type : String,
         unique : true
     },
     telefono : {
         type : String,
-        unique : true,
         required : [true, 'el telefono es necesario']
     },
     direccion : {
         type : String,
-        unique : true,
         required : [true, 'la dirección es necesaria']
     },
     email : {
