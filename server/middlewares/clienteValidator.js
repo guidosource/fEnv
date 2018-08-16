@@ -1,5 +1,6 @@
 const Cliente = require('../models/cliente');
 
+const _ = require('underscore');
 
 // Valida que los datos enviados son correctos
 
@@ -108,14 +109,6 @@ let validarNuevoCliente = async (req, res, next) => {
     });
 
 
-    if (regEmail.test(body.email ) || !body.email ) {
-        // Check unique
-        dataOk.push('email');
-    }
-    else {
-        errores.push('email');
-    }
-
     //Verifica si hay errores.
 
     if (dataOk.length != 6) {
@@ -124,6 +117,8 @@ let validarNuevoCliente = async (req, res, next) => {
             err: { 'errores en los campos': errores }
         });
     }
+
+    req.cliente = _.pick(body, ['nombre','apellido','documento','telefono','direccion','email'] );
 
     next();
 
