@@ -44,7 +44,7 @@ app.get('/cliente/obtenerclientes', (req, res) => {
 
     Cliente.find({estado : 'true'}).exec((err, clientes) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -55,6 +55,37 @@ app.get('/cliente/obtenerclientes', (req, res) => {
             clientes
         });
     });
+});
+
+app.get('/cliente/buscar/:termino', (req,res) => {
+
+    let termino = req.params.termino;
+
+    let regTermino = new RegExp(termino,'i');
+
+    Cliente.find({ $or:
+            [{nombre: regTermino},
+            {apellido: regTermino},
+            {telefono: regTermino},
+            {documento: regTermino},
+            {email: regTermino}],
+            $and: [{estado: true}]
+
+         })
+        .exec((err, clientes) => {
+            if(err){
+                return res.status(500).json({
+                    ok: false,
+                    err
+                })
+            }
+
+            res.json({
+                ok: true,
+                clientes
+            });
+        });
+
 });
 
 app.put('/cliente/bajacliente/:id', (req, res) => {
